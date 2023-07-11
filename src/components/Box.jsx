@@ -1,8 +1,8 @@
 import { BoxStatus } from "./types";
-import boxStyles from '../styles/box.scss';
+import styles from './box.module.scss';
 import classNames from 'classnames/bind';
 
-const classes = classNames.bind(boxStyles);
+const classes = classNames.bind(styles);
 
 interface BoxProps {
     value: String;

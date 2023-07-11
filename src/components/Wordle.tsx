@@ -1,11 +1,10 @@
 import Box from "./Box";
+import RowCompleted from "./RowCompleted";
 
 export default function Wordle() {
     return (
         <div>
-           <Box value='a' status='present'/>
-           <Box value='b' status='absent'/> 
-           <Box value='c' status='correct'/> 
+           <RowCompleted word='sabio' solution='break' />
         </div>
     );
 }
