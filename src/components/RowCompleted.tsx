@@ -1,6 +1,6 @@
-import Box from "./Box";
+import Box from './Box';
 import { BoxStatus } from './types';
-import styles from './row.module.scss';
+import styles from '../styles/row.module.scss';
 
 interface RowCompletedProps {
     word: String;

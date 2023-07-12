@@ -1,5 +1,5 @@
-import { BoxStatus } from "./types";
-import styles from './box.module.scss';
+import { BoxStatus } from './types';
+import styles from '../styles/box.module.scss';
 import classNames from 'classnames/bind';
 
 const classes = classNames.bind(styles);
