@@ -5,6 +5,7 @@ import RowCurrent from './RowCurrent';
 import RowEmpty from './RowEmpty';
 import { GameStatus } from './types';
 import { useWindow } from '../hooks/useWindow';
+import { getWordOfTheDay } from '../service/request';
 
 const keys = [
     'Q',
@@ -45,8 +46,9 @@ export default function Wordle() {
 
     useWindow('keydown', handleKeydown)
 
+    // Function to get a word
     useEffect(() => {
-        setWordOfTheDay('BREAK')
+        setWordOfTheDay(getWordOfTheDay())
     }, [])
 
     function handleKeydown(event:KeyboardEvent) {
@@ -109,6 +111,12 @@ export default function Wordle() {
         }
 
         // Check if the word exists
+        // const validWord = await isValidWord(currentWord)
+
+        // if (currentWord.length === 5 && !validWord) {
+        //     alert('Not a valid word')
+        //     return
+        // }
 
         // Else
         setCompletedWords([...completedWords, currentWord])
