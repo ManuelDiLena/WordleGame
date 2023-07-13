@@ -46,11 +46,16 @@ export default function Wordle() {
     useWindow('keydown', handleKeydown)
 
     useEffect(() => {
-        setWordOfTheDay('break')
-    })
+        setWordOfTheDay('BREAK')
+    }, [])
 
     function handleKeydown(event:KeyboardEvent) {
         const letter = event.key.toUpperCase()
+
+        // Validate if the game ended so you can't enter anymore
+        if (gameStatus !== GameStatus.Playing) {
+            return
+        }
 
         // Valid when deleted
         if (event.key === 'Backspace' && currentWord.length > 0) {
@@ -58,7 +63,9 @@ export default function Wordle() {
             return
         }
 
-        if (event.key === 'Enter') {
+        // Validates when we hit enter
+        if (event.key === 'Enter' && currentWord.length === 5 && turn <= 6) {
+            onEnter()
             return
         }
 
@@ -85,14 +92,47 @@ export default function Wordle() {
         setCurrentWord(newWord)
     }
 
+    // Function that analyzes all the possibilities when pressing enter
+    function onEnter() {
+        // Player won
+        if (currentWord === wordOfTheDay) {
+            setCompletedWords([...completedWords, currentWord])
+            setGameStatus(GameStatus.Won)
+            return
+        }
+
+        // Player lost
+        if (turn === 6) {
+            setCompletedWords([...completedWords, currentWord])
+            setGameStatus(GameStatus.Lost)
+            return
+        }
+
+        // Check if the word exists
+
+        // Else
+        setCompletedWords([...completedWords, currentWord])
+        setTurn(turn + 1)
+        setCurrentWord('')
+    }
+
     return (
         <div>
-           <RowCompleted word='sabio' solution={wordOfTheDay} />
-           <RowCompleted word='sabio' solution={wordOfTheDay} />
-           <RowCurrent word={currentWord} />
-           <RowEmpty />
-           <RowEmpty />
-           <RowEmpty />
+            {
+                completedWords.map((word, i) => (
+                    <RowCompleted word={word} solution={wordOfTheDay} />
+                ))
+            }
+            {
+                gameStatus === GameStatus.Playing ? (
+                    <RowCurrent word={currentWord} />
+                ) : null
+            }
+            {
+                Array.from(Array(6 - turn)).map((_, i) => (
+                    <RowEmpty key={i} />
+                ))
+            }
         </div>
     );
 }
