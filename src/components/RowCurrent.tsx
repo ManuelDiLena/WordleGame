@@ -5,7 +5,7 @@ interface RowCurrentProps {
     word:string;
 }
 
-export default function RowCurrent({ word }: RowCurrentProps) {
+export default function RowCurrent({ word }:RowCurrentProps) {
 
     const wordArray = word.split('');
 

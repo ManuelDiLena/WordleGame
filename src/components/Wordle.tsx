@@ -8,6 +8,7 @@ import { GameStatus } from './types';
 import { getWordOfTheDay, isValidWord } from '../service/request';
 import styles from '../styles/wordle.module.scss';
 import Keyboard from './Keyboard';
+import Modal from './Modal';
 
 const keys = [
     'Q',
@@ -133,6 +134,21 @@ export default function Wordle() {
 
     return (
         <>
+            {
+                gameStatus === GameStatus.Won ? (
+                    <Modal 
+                        type='won'
+                        completedWords={completedWords}
+                        solution={wordOfTheDay}
+                    />
+                ) : gameStatus === GameStatus.Lost ? (
+                    <Modal 
+                        type='lost'
+                        completedWords={completedWords}
+                        solution={wordOfTheDay}
+                    />
+                ) : null
+            }
             <div className={styles.mainContainer}>
                 {
                     completedWords.map((word, i) => (

@@ -36,8 +36,8 @@ export default function Keyboard({ keys, onKeyPressed }:KeyboardProps) {
                     </button>
                 ))
             }
-            <button className={styles.enterKey} onClick={handleEnter}>
-                ENTER
+            <button className={styles.deleteKey} onClick={handleDelete}>
+                DELETE
             </button>
             {
                 Array.from(Array(7)).map((_, i) => (
@@ -46,8 +46,8 @@ export default function Keyboard({ keys, onKeyPressed }:KeyboardProps) {
                     </button>
                 ))
             }
-            <button className={styles.deleteKey} onClick={handleDelete}>
-                DELETE
+            <button className={styles.enterKey} onClick={handleEnter}>
+                ENTER
             </button>
         </div>
     );
