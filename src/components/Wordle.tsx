@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
-import Box from './Box';
+import { useWindow } from '../hooks/useWindow';
+//import Box from './Box';
 import RowCompleted from './RowCompleted';
 import RowCurrent from './RowCurrent';
 import RowEmpty from './RowEmpty';
 import { GameStatus } from './types';
-import { useWindow } from '../hooks/useWindow';
-import { getWordOfTheDay } from '../service/request';
+import { getWordOfTheDay, isValidWord } from '../service/request';
+import styles from '../styles/wordle.module.scss';
+import Keyboard from './Keyboard';
 
 const keys = [
     'Q',
@@ -46,27 +48,32 @@ export default function Wordle() {
 
     useWindow('keydown', handleKeydown)
 
+
     // Function to get a word
     useEffect(() => {
         setWordOfTheDay(getWordOfTheDay())
     }, [])
 
     function handleKeydown(event:KeyboardEvent) {
-        const letter = event.key.toUpperCase()
+        const key = event.key.toUpperCase()
 
+        onKeyPressed(key)
+    }
+
+    function onKeyPressed(key:string) {
         // Validate if the game ended so you can't enter anymore
         if (gameStatus !== GameStatus.Playing) {
             return
         }
 
         // Valid when deleted
-        if (event.key === 'Backspace' && currentWord.length > 0) {
+        if (key === 'BACKSPACE' && currentWord.length > 0) {
             onDelete()
             return
         }
 
         // Validates when we hit enter
-        if (event.key === 'Enter' && currentWord.length === 5 && turn <= 6) {
+        if (key === 'ENTER' && currentWord.length === 5 && turn <= 6) {
             onEnter()
             return
         }
@@ -76,8 +83,8 @@ export default function Wordle() {
         }
 
         // Enter letter to state
-        if (keys.includes(letter)) {
-            onInput(letter)
+        if (keys.includes(key)) {
+            onInput(key)
             return
         }
     }
@@ -95,7 +102,7 @@ export default function Wordle() {
     }
 
     // Function that analyzes all the possibilities when pressing enter
-    function onEnter() {
+    async function onEnter() {
         // Player won
         if (currentWord === wordOfTheDay) {
             setCompletedWords([...completedWords, currentWord])
@@ -111,12 +118,12 @@ export default function Wordle() {
         }
 
         // Check if the word exists
-        // const validWord = await isValidWord(currentWord)
+        const validWord = await isValidWord(currentWord)
 
-        // if (currentWord.length === 5 && !validWord) {
-        //     alert('Not a valid word')
-        //     return
-        // }
+        if (currentWord.length === 5 && !validWord) {
+            alert('Not a valid word')
+            return
+        }
 
         // Else
         setCompletedWords([...completedWords, currentWord])
@@ -125,22 +132,30 @@ export default function Wordle() {
     }
 
     return (
-        <div>
-            {
-                completedWords.map((word, i) => (
-                    <RowCompleted word={word} solution={wordOfTheDay} />
-                ))
-            }
-            {
-                gameStatus === GameStatus.Playing ? (
-                    <RowCurrent word={currentWord} />
-                ) : null
-            }
-            {
-                Array.from(Array(6 - turn)).map((_, i) => (
-                    <RowEmpty key={i} />
-                ))
-            }
-        </div>
+        <>
+            <div className={styles.mainContainer}>
+                {
+                    completedWords.map((word, i) => (
+                        <RowCompleted
+                            key={i}
+                            word={word}
+                            solution={wordOfTheDay}
+                            animate={true}
+                        />
+                    ))
+                }
+                {
+                    gameStatus === GameStatus.Playing ? (
+                        <RowCurrent word={currentWord} />
+                    ) : null
+                }
+                {
+                    Array.from(Array(6 - turn)).map((_, i) => (
+                        <RowEmpty key={i} />
+                    ))
+                }
+            </div>
+            <Keyboard keys={keys} onKeyPressed={onInput} />
+        </>
     );
 }

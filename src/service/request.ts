@@ -1,8 +1,8 @@
-import { words } from './words';
+import { WORDS } from './words';
 
 // Function to get word from array
 function getWords() {
-    return words
+    return WORDS
 }
 
 // Function to get a different word every day
@@ -15,9 +15,21 @@ export function getWordOfTheDay() {
 console.log(getWordOfTheDay())
 
 // Function to validate that it is an existing word
-export function isValidWord(word:string) {
-    const words = getWords()
-    return words.includes(word.toLowerCase())
+export async function isValidWord(word:string) {
+    try {
+        const URL = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word;
+        const response = await fetch(URL)
+        if (response.status !== 200) throw new Error('Request Failed')
+        const json = await response.json()
+
+        return json.length
+    } catch (e) {
+        console.log(e)
+        return false
+    }
+
+    // const words = getWords()
+    // return words.includes(word.toLowerCase())
 }
 
 // Funcion to get a random word
