@@ -12,11 +12,11 @@ export default function Keyboard({ keys, onKeyPressed }:KeyboardProps) {
     }
 
     function handleEnter(e:any) {
-        onKeyPressed(e.target.textContent)
+        onKeyPressed('ENTER')
     }
 
     function handleDelete(e:any) {
-        onKeyPressed(e.target.textContent)
+        onKeyPressed('BACKSPACE')
     }
 
     return (

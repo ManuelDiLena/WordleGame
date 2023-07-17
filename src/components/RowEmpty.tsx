@@ -9,7 +9,7 @@ export default function RowEmpty() {
         <div className={styles.row}>
             {
                 arr.map((_, i) => (
-                    <Box key={i} value='' status='empty' />
+                    <Box key={i} value={''} status='empty' />
                 ))
             }
         </div>

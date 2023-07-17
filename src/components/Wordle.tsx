@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useWindow } from '../hooks/useWindow';
-//import Box from './Box';
 import RowCompleted from './RowCompleted';
 import RowCurrent from './RowCurrent';
 import RowEmpty from './RowEmpty';
@@ -171,7 +170,7 @@ export default function Wordle() {
                     ))
                 }
             </div>
-            <Keyboard keys={keys} onKeyPressed={onInput} />
+            <Keyboard keys={keys} onKeyPressed={onKeyPressed} />
         </>
     );
 }

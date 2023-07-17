@@ -8,12 +8,12 @@ interface RowCompletedProps {
     animate:boolean;
 }
 
-export default function RowCompleted({ word, solution, animate=false }: RowCompletedProps) {
+export default function RowCompleted({ word, solution, animate=false }:RowCompletedProps) {
 
     const arr = Array.from(Array(5));
 
     // Function to check the letter of each box
-    function checkLetter(letter:string, pos:number): BoxStatus {
+    function checkLetter(letter:string, pos:number):BoxStatus {
         if (solution.includes(letter)) {
             if (solution[pos] === letter) {
                 return 'correct'
